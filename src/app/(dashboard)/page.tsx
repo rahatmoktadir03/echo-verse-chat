@@ -1,5 +1,4 @@
 "use client";
-
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AddFriend } from "./_components/add-friend";
 import {

@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -12,11 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { api } from "@/api";
+import { Dialog } from "@radix-ui/react-dialog";
 import { useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { toast } from "sonner";
 import { useState } from "react";
-
+import { toast } from "sonner";
+import { catchError } from "@/lib/utils";
 export function AddFriend() {
   const [open, setOpen] = useState(false);
   const createFriendRequest = useMutation(
@@ -25,16 +25,20 @@ export function AddFriend() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await createFriendRequest({ username: e.currentTarget.username.value });
-      toast.success("Friend request sent");
-      setOpen(false);
-    } catch (error) {
+    const username = e.currentTarget.username.value;
+
+    const [error] = await catchError(createFriendRequest({ username }));
+
+    if (error) {
       toast.error("Failed to send friend request", {
         description:
           error instanceof Error ? error.message : "An unknown error occurred",
       });
+      return;
     }
+
+    toast.success("Friend request sent");
+    setOpen(false);
   };
 
   return (
@@ -52,7 +56,7 @@ export function AddFriend() {
         <form className="contents" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
             <Label htmlFor="username">Username</Label>
-            <Input id="username" type="text" />
+            <Input id="username" type="text" required />
           </div>
           <DialogFooter>
             <Button>Send Friend Request</Button>

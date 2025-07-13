@@ -12,38 +12,34 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { api } from "@/api";
 import { SignOutButton } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
-import { User2Icon } from "lucide-react";
+import { PlusIcon, User2Icon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { api } from "../../../../../convex/_generated/api";
-import { NewDirectMessage } from "./new-direct-message";
 
-export function DMSidebar() {
+export function DashboardSidebar() {
   const user = useQuery(api.functions.user.get);
-  const directMessages = useQuery(api.functions.dm.list);
-  const pathname = usePathname();
 
   if (!user) {
     return null;
   }
-
   return (
-    <Sidebar className="left-12">
+    <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/"}>
-                  <Link href="/">
+                <SidebarMenuButton asChild>
+                  <Link href="/friends">
                     <User2Icon />
                     Friends
                   </Link>
@@ -51,34 +47,13 @@ export function DMSidebar() {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Direct Messages</SidebarGroupLabel>
-            <NewDirectMessage />
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {directMessages?.map((directMessage) => (
-                  <SidebarMenuItem key={directMessage._id}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={pathname === `/dms/${directMessage._id}`}
-                    >
-                      <Link href={`/dms/${directMessage._id}`}>
-                        <Avatar className="size-6">
-                          <AvatarImage src={directMessage.user.image} />
-                          <AvatarFallback>
-                            {directMessage.user.username[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                        <p className="font-medium">
-                          {directMessage.user.username}
-                        </p>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Direct Messages</SidebarGroupLabel>
+          <SidebarGroupAction>
+            <PlusIcon />
+            <span className="sr-only">New Direct Message</span>
+          </SidebarGroupAction>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
@@ -97,9 +72,9 @@ export function DMSidebar() {
                     </SidebarMenuButton>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <SignOutButton>
-                      <DropdownMenuItem>Sign Out</DropdownMenuItem>
-                    </SignOutButton>
+                    <DropdownMenuItem asChild>
+                      <SignOutButton />
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </SidebarMenuItem>

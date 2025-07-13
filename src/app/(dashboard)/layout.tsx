@@ -1,11 +1,25 @@
+"use client";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { DMSidebar } from "./_components/sidebar";
+import { RedirectToSignIn } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated } from "convex/react";
+import { DashboardSidebar } from "./_components/sidebar";
 
-export default function DMLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <SidebarProvider>
-      <DMSidebar />
-      {children}
-    </SidebarProvider>
+    <>
+      <Authenticated>
+        <SidebarProvider>
+          <DashboardSidebar />
+          {children}
+        </SidebarProvider>
+      </Authenticated>
+      <Unauthenticated>
+        <RedirectToSignIn />
+      </Unauthenticated>
+    </>
   );
 }

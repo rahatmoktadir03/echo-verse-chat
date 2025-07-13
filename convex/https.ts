@@ -14,6 +14,7 @@ http.route({
     if (!body) {
       return new Response("Unauthorized", { status: 401 });
     }
+
     switch (body.type) {
       case "user.created":
         await ctx.runMutation(internal.functions.user.upsert, {
@@ -36,8 +37,10 @@ http.route({
           });
         }
         break;
+      default:
+        break;
     }
-    return new Response("OK", { status: 200 });
+    return new Response("Hello, world!", { status: 200 });
   }),
 });
 
@@ -46,17 +49,24 @@ const validateRequest = async (req: Request) => {
   const svix_timestamp = req.headers.get("svix-timestamp");
   const svix_signature = req.headers.get("svix-signature");
 
+  if (!svix_id || !svix_timestamp || !svix_signature) {
+    return new Response("Request missing svix headers", { status: 400 });
+  }
+
   const text = await req.text();
 
   try {
-    const webhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
-    return webhook.verify(text, {
-      "svix-id": svix_id!,
-      "svix-timestamp": svix_timestamp!,
-      "svix-signature": svix_signature!,
+    const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET! as string);
+    return wh.verify(text, {
+      "svix-id": svix_id,
+      "svix-timestamp": svix_timestamp,
+      "svix-signature": svix_signature,
     }) as unknown as WebhookEvent;
   } catch (error) {
-    return null;
+    return new Response(
+      `${error instanceof Error ? error.message : "Unknown error"}`,
+      { status: 400 }
+    );
   }
 };
 

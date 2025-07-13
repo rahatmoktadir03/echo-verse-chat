@@ -1,34 +1,44 @@
 "use client";
 
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
+import { api } from "@/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, MessageCircleIcon, XIcon } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { cn } from "@/lib/utils";
 
 export function PendingFriendsList() {
   const friends = useQuery(api.functions.friend.listPending);
+
   const updateStatus = useMutation(api.functions.friend.updateStatus);
+
+  // If friends is undefined (loading) or null (error), show loading state
+  if (friends === undefined) {
+    return (
+      <div className="flex flex-col divide-y">
+        <h2 className="text-xs font-medium text-muted-foreground p-2.5">
+          Pending Friends
+        </h2>
+        <FriendsListEmpty>Loading friend requests...</FriendsListEmpty>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col divide-y">
       <h2 className="text-xs font-medium text-muted-foreground p-2.5">
         Pending Friends
       </h2>
-      {friends?.length === 0 && (
+      {(!friends || friends.length === 0) && (
         <FriendsListEmpty>
-          You don&apos;t have any pending friend requests.
+          You don&apos;t have any pending friend requests
         </FriendsListEmpty>
       )}
       {friends?.map((friend, index) => (
         <FriendItem
-          key={index}
+          key={friend._id}
           username={friend.user.username}
           image={friend.user.image}
         >
@@ -53,16 +63,13 @@ export function PendingFriendsList() {
 export function AcceptedFriendsList() {
   const friends = useQuery(api.functions.friend.listAccepted);
   const updateStatus = useMutation(api.functions.friend.updateStatus);
-
   return (
     <div className="flex flex-col divide-y">
       <h2 className="text-xs font-medium text-muted-foreground p-2.5">
         Accepted Friends
       </h2>
-      {friends?.length === 0 && (
-        <FriendsListEmpty>
-          You don&apos;t have any friends yet.
-        </FriendsListEmpty>
+      {friends?.length == 0 && (
+        <FriendsListEmpty>You don&apos;t have any friends yet</FriendsListEmpty>
       )}
       {friends?.map((friend, index) => (
         <FriendItem
@@ -134,10 +141,10 @@ function FriendItem({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between p-2.5 gap-2.5">
+    <div className="flex items-center justify-between p-2.5 gap-2.5 ">
       <div className="flex items-center gap-2 5">
         <Avatar className="size-9 border">
-          <AvatarImage src={image} />
+          <AvatarImage src={image}></AvatarImage>
           <AvatarFallback />
         </Avatar>
         <p className="text-sm font-medium">{username}</p>

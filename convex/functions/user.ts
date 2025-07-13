@@ -8,7 +8,18 @@ import { v } from "convex/values";
 
 export const get = query({
   handler: async (ctx) => {
-    return await getCurrentUser(ctx);
+    try {
+      console.log("getting user");
+      console.log(await getCurrentUser(ctx));
+      return await getCurrentUser(ctx);
+    } catch (error) {
+      console.error("Error getting user: ", error);
+      throw new Error(
+        `${
+          error instanceof Error ? error.message : `Unknown error @${get.name}`
+        }`
+      );
+    }
   },
 });
 
@@ -37,28 +48,39 @@ export const upsert = internalMutation({
 });
 
 export const remove = internalMutation({
-  args: { clerkId: v.string() },
-  handler: async (ctx, { clerkId }) => {
-    const user = await getUserByClerkId(ctx, clerkId);
+  args: {
+    clerkId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await getUserByClerkId(ctx, args.clerkId);
     if (user) {
       await ctx.db.delete(user._id);
     }
   },
 });
 
+// FIXED: Return null instead of throwing when no identity
 export const getCurrentUser = async (ctx: QueryCtx | MutationCtx) => {
   const identity = await ctx.auth.getUserIdentity();
+  console.log("🔍 identity", identity);
+
   if (!identity) {
-    return null;
+    console.log("❌ No identity found");
+    return null; // Return null instead of throwing
   }
-  return await getUserByClerkId(ctx, identity.subject);
+
+  const user = await getUserByClerkId(ctx, identity.subject);
+  console.log("🔍 user from database", user);
+
+  return user;
 };
 
-const getUserByClerkId = async (
+export const getUserByClerkId = (
   ctx: QueryCtx | MutationCtx,
   clerkId: string
 ) => {
-  return await ctx.db
+  console.log("🔍 clerkId", clerkId);
+  return ctx.db
     .query("users")
     .withIndex("by_clerk_id", (q) => q.eq("clerkId", clerkId))
     .unique();
