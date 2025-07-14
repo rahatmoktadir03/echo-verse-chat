@@ -17,7 +17,7 @@ import type * as functions_friend from "../functions/friend.js";
 import type * as functions_helpers from "../functions/helpers.js";
 import type * as functions_message from "../functions/message.js";
 import type * as functions_user from "../functions/user.js";
-import type * as https from "../https.js";
+import type * as http from "../http.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -32,7 +32,7 @@ declare const fullApi: ApiFromModules<{
   "functions/helpers": typeof functions_helpers;
   "functions/message": typeof functions_message;
   "functions/user": typeof functions_user;
-  https: typeof https;
+  http: typeof http;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

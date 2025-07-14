@@ -1,9 +1,9 @@
-import { mutation, query } from "../_generated/server";
 import {
   customCtx,
   customMutation,
   customQuery,
 } from "convex-helpers/server/customFunctions";
+import { mutation, query } from "../_generated/server";
 import { getCurrentUser } from "./user";
 
 export const authenticatedQuery = customQuery(
@@ -17,6 +17,7 @@ export const authenticatedQuery = customQuery(
       user ? "✅ Found user" : "❌ No user"
     );
 
+    // Fix: throw error when user is NOT found (when !user)
     if (!user) {
       console.log("❌ No user found - throwing Unauthorized");
       throw new Error("Unauthorized");
@@ -38,6 +39,7 @@ export const authenticatedMutation = customMutation(
       user ? "✅ Found user" : "❌ No user"
     );
 
+    // Fix: throw error when user is NOT found (when !user)
     if (!user) {
       console.log("❌ No user found - throwing Unauthorized");
       throw new Error("Unauthorized");
