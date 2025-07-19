@@ -1,6 +1,7 @@
 import {
   internalMutation,
   MutationCtx,
+  mutation,
   query,
   QueryCtx,
 } from "../_generated/server";
@@ -10,8 +11,25 @@ export const get = query({
   handler: async (ctx) => {
     try {
       console.log("🔍 Getting user");
+
+      // Check auth first
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        console.log("❌ No identity found");
+        return null;
+      }
+
       const user = await getCurrentUser(ctx);
       console.log("🔍 User result:", user ? "✅ Found" : "❌ Not found");
+
+      // Cannot create user in a query - this should be handled by webhooks or mutations
+      if (!user && identity) {
+        console.log(
+          "⚠️ User authenticated but not in database - needs user creation"
+        );
+        return null; // Return null instead of trying to create user in query
+      }
+
       return user;
     } catch (error) {
       console.error("❌ Error getting user:", error);
@@ -20,6 +38,50 @@ export const get = query({
           error instanceof Error ? error.message : `Unknown error @${get.name}`
         }`
       );
+    }
+  },
+});
+
+export const create = mutation({
+  handler: async (ctx) => {
+    try {
+      console.log("🔍 Creating user from authenticated session");
+
+      // Check auth first
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        console.log("❌ No identity found");
+        throw new Error("Unauthorized");
+      }
+
+      // Check if user already exists
+      const existingUser = await getUserByClerkId(ctx, identity.subject);
+      if (existingUser) {
+        console.log("✅ User already exists:", existingUser._id);
+        return existingUser;
+      }
+
+      // Get user info from Clerk identity with proper type handling
+      const username =
+        typeof identity.username === "string"
+          ? identity.username
+          : typeof identity.email === "string"
+          ? identity.email.split("@")[0]
+          : "Unknown";
+
+      const userInfo = {
+        username,
+        image: identity.pictureUrl || "",
+        clerkId: identity.subject,
+      };
+
+      const newUserId = await ctx.db.insert("users", userInfo);
+      const newUser = await ctx.db.get(newUserId);
+      console.log("✅ Created new user:", newUserId);
+      return newUser;
+    } catch (error) {
+      console.error("❌ Error creating user:", error);
+      throw error;
     }
   },
 });

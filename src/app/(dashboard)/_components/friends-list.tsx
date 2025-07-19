@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery } from "convex/react";
-import { api } from "@/api";
+import { api } from "../../../../convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, MessageCircleIcon, XIcon } from "lucide-react";
@@ -11,10 +11,9 @@ import { cn } from "@/lib/utils";
 
 export function PendingFriendsList() {
   const friends = useQuery(api.functions.friend.listPending);
-
   const updateStatus = useMutation(api.functions.friend.updateStatus);
 
-  // If friends is undefined (loading) or null (error), show loading state
+  // Handle loading state
   if (friends === undefined) {
     return (
       <div className="flex flex-col divide-y">
@@ -26,17 +25,31 @@ export function PendingFriendsList() {
     );
   }
 
+  // Handle error state - friends will be null if query failed
+  if (friends === null) {
+    return (
+      <div className="flex flex-col divide-y">
+        <h2 className="text-xs font-medium text-muted-foreground p-2.5">
+          Pending Friends
+        </h2>
+        <FriendsListEmpty>
+          Unable to load friend requests. Please try refreshing the page.
+        </FriendsListEmpty>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col divide-y">
       <h2 className="text-xs font-medium text-muted-foreground p-2.5">
         Pending Friends
       </h2>
-      {(!friends || friends.length === 0) && (
+      {friends.length === 0 && (
         <FriendsListEmpty>
           You don&apos;t have any pending friend requests
         </FriendsListEmpty>
       )}
-      {friends?.map((friend, index) => (
+      {friends.map((friend, index) => (
         <FriendItem
           key={friend._id}
           username={friend.user.username}

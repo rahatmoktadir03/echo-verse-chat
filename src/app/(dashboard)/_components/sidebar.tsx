@@ -19,7 +19,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { api } from "@/api";
+import { api } from "../../../../convex/_generated/api";
 import { SignOutButton } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { PlusIcon, User2Icon } from "lucide-react";

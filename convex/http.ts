@@ -15,32 +15,47 @@ http.route({
       return new Response("Unauthorized", { status: 401 });
     }
 
-    switch (body.type) {
-      case "user.created":
-        await ctx.runMutation(internal.functions.user.upsert, {
-          username: body.data.username!,
-          image: body.data.image_url,
-          clerkId: body.data.id,
-        });
-        break;
-      case "user.updated":
-        await ctx.runMutation(internal.functions.user.upsert, {
-          username: body.data.username!,
-          image: body.data.image_url,
-          clerkId: body.data.id,
-        });
-        break;
-      case "user.deleted":
-        if (body.data.id) {
-          await ctx.runMutation(internal.functions.user.remove, {
+    try {
+      switch (body.type) {
+        case "user.created":
+          console.log("📝 Creating user from webhook:", body.data.id);
+          await ctx.runMutation(internal.functions.user.upsert, {
+            username:
+              body.data.username ||
+              body.data.email_addresses?.[0]?.email_address?.split("@")[0] ||
+              "Unknown",
+            image: body.data.image_url || "",
             clerkId: body.data.id,
           });
-        }
-        break;
-      default:
-        break;
+          break;
+        case "user.updated":
+          console.log("📝 Updating user from webhook:", body.data.id);
+          await ctx.runMutation(internal.functions.user.upsert, {
+            username:
+              body.data.username ||
+              body.data.email_addresses?.[0]?.email_address?.split("@")[0] ||
+              "Unknown",
+            image: body.data.image_url || "",
+            clerkId: body.data.id,
+          });
+          break;
+        case "user.deleted":
+          if (body.data.id) {
+            console.log("🗑️ Deleting user from webhook:", body.data.id);
+            await ctx.runMutation(internal.functions.user.remove, {
+              clerkId: body.data.id,
+            });
+          }
+          break;
+        default:
+          console.log("⚠️ Unhandled webhook event type:", body.type);
+          break;
+      }
+      return new Response("OK", { status: 200 });
+    } catch (error) {
+      console.error("❌ Webhook processing error:", error);
+      return new Response("Internal Server Error", { status: 500 });
     }
-    return new Response("Hello, world!", { status: 200 });
   }),
 });
 

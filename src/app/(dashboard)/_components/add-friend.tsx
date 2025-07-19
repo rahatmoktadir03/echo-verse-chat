@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "@/api";
+import { api } from "../../../../convex/_generated/api";
 import { Dialog } from "@radix-ui/react-dialog";
 import { useMutation } from "convex/react";
 import { useState } from "react";
