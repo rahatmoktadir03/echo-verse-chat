@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Echo Verse Chat
 
-## Getting Started
+**Live Demo:** [echo-verse-phi.vercel.app](https://echo-verse-phi.vercel.app)
 
-First, run the development server:
+![Echo Verse Logo](https://github.com/rahatmoktadir03/echo-verse-chat/raw/main/assets/logo.png)
+
+---
+
+## 🎤 What is Echo Verse Chat?
+
+**Echo Verse Chat** is a modern, full-stack, real-time communication platform inspired by Discord. It offers instant messaging, group chat, and high-quality video/audio calling—all packed in a beautiful, responsive UI. It’s designed for scalability, speed, and a seamless user experience.
+
+---
+
+## 🚀 Features
+
+- **🗨️ Real-time Messaging:** Instant text chat with typing indicators and message status.
+- **📞 Video & Audio Calls:** Create or join real-time calls with WebRTC.
+- **👥 Group & Direct Chats:** Public and private channels, as well as direct messages.
+- **🔔 Notifications:** Real-time and in-app notifications for messages and calls.
+- **📱 Responsive Design:** Looks and feels great on desktop and mobile.
+- **⚡ Fast & Scalable:** Built with serverless deployment and modern tech.
+- **🔒 Secure:** Uses modern authentication and secure data flow.
+- **🛠️ Modern Stack:** Built with React, Tailwind CSS, Convex, Node.js, WebRTC, and deployed on Vercel.
+
+---
+
+## 🏗️ Tech Stack
+
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **Backend:** Convex (serverless real-time DB), Node.js
+- **Real-Time Communication:** WebRTC, WebSocket
+- **Deployment:** Vercel
+
+---
+
+## 🌐 Try It Live
+
+> 👉 [echo-verse-phi.vercel.app](https://echo-verse-phi.vercel.app)
+
+---
+
+## 🛠️ Installation
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/rahatmoktadir03/echo-verse-chat.git
+cd echo-verse-chat
+
+# 2. Install dependencies
+npm install
+
+# 3. Set up environment variables
+# (See .env.example and fill in your own API keys and secrets)
+
+# 4. Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
