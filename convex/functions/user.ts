@@ -42,6 +42,23 @@ export const get = query({
   },
 });
 
+export const getById = query({
+  args: {
+    id: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    try {
+      console.log("🔍 Getting user by ID:", args.id);
+      const user = await ctx.db.get(args.id);
+      console.log("🔍 User result:", user ? "✅ Found" : "❌ Not found");
+      return user;
+    } catch (error) {
+      console.error("❌ Error getting user by ID:", error);
+      return null;
+    }
+  },
+});
+
 export const create = mutation({
   handler: async (ctx) => {
     try {

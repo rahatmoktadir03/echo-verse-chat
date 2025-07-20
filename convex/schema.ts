@@ -23,7 +23,11 @@ export default defineSchema({
     .index("by_user2_status", ["user2", "status"]),
 
   messages: defineTable({
-    sender: v.string(),
+    sender: v.id("users"),
+    recipient: v.id("users"),
     content: v.string(),
-  }),
+  })
+    .index("by_sender", ["sender"])
+    .index("by_recipient", ["recipient"])
+    .index("by_conversation", ["sender", "recipient"]),
 });

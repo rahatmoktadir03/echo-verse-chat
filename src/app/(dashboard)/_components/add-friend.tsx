@@ -44,22 +44,45 @@ export function AddFriend() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">Add Friend</Button>
+        <Button
+          size="sm"
+          className="bg-primary/90 hover:bg-primary hover:scale-105 transition-all duration-200"
+        >
+          + Add Friend
+        </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="glass-effect border-border/50">
         <DialogHeader>
-          <DialogTitle>Add Friend</DialogTitle>
-          <DialogDescription>
-            You can add a friend by their username.
+          <DialogTitle className="text-lg">Add Friend</DialogTitle>
+          <DialogDescription className="mono text-muted-foreground">
+            Connect with friends by entering their username
           </DialogDescription>
         </DialogHeader>
         <form className="contents" onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-1">
-            <Label htmlFor="username">Username</Label>
-            <Input id="username" type="text" required />
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="username" className="text-sm font-medium mono">
+              USERNAME
+            </Label>
+            <Input
+              id="username"
+              type="text"
+              required
+              placeholder="Enter username..."
+              className="bg-background/60 border-border/50 focus:ring-2 focus:ring-primary/50 focus:border-primary/50 backdrop-blur-sm"
+            />
           </div>
           <DialogFooter>
-            <Button>Send Friend Request</Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="mr-2"
+            >
+              Cancel
+            </Button>
+            <Button className="bg-primary/90 hover:bg-primary">
+              Send Request
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
