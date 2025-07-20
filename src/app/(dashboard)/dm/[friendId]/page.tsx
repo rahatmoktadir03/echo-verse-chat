@@ -20,8 +20,6 @@ export default function DirectMessagePage({
   const resolvedParams = use(params);
   const friendId = resolvedParams.friendId as Id<"users">;
 
-  // For now, we'll just show a placeholder since we don't have message functionality yet
-  const user = useQuery(api.functions.user.get);
   const friend = useQuery(api.functions.user.getById, { id: friendId });
   const messages = useQuery(api.functions.message.getConversation, {
     friendId,

@@ -110,7 +110,7 @@ export function DashboardSidebar() {
                 <SidebarMenuItem>
                   <SidebarMenuButton disabled>
                     <span className="text-muted-foreground text-sm mono">
-                      // No active conversations
+                      No active conversations
                     </span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

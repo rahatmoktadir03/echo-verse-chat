@@ -59,7 +59,7 @@ export function PendingFriendsList() {
         </FriendsListEmpty>
       )}
       <div className="space-y-2">
-        {friends.map((friend, index) => (
+        {friends.map((friend) => (
           <FriendItem
             key={friend._id}
             username={friend.user.username}
@@ -110,7 +110,7 @@ export function AcceptedFriendsList() {
         </FriendsListEmpty>
       )}
       <div className="space-y-2">
-        {friends?.map((friend, index) => (
+        {friends?.map((friend) => (
           <FriendItem
             key={friend._id}
             username={friend.user.username}
