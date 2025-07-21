@@ -2,16 +2,10 @@
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { Authenticated, Unauthenticated } from "convex/react";
 
-export default function DMLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DMLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Authenticated>
-        {children}
-      </Authenticated>
+      <Authenticated>{children}</Authenticated>
       <Unauthenticated>
         <RedirectToSignIn />
       </Unauthenticated>

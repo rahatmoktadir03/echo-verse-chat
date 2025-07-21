@@ -1,13 +1,13 @@
 "use client";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon, ArrowLeftIcon } from "lucide-react";
 import { useState, use, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Id } from "../../../../../convex/_generated/dataModel";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export default function DirectMessagePage({
   params,

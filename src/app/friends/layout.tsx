@@ -9,9 +9,7 @@ export default function FriendsLayout({
 }) {
   return (
     <>
-      <Authenticated>
-        {children}
-      </Authenticated>
+      <Authenticated>{children}</Authenticated>
       <Unauthenticated>
         <RedirectToSignIn />
       </Unauthenticated>
