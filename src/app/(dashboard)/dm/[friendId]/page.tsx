@@ -65,7 +65,7 @@ export default function DirectMessagePage({
       {/* Header */}
       <header className="flex items-center gap-3 p-4 border-b border-border/50 glass-effect">
         <Button variant="ghost" size="sm" asChild className="hover:bg-muted/50">
-          <Link href="/">
+          <Link href="/dashboard">
             <ArrowLeftIcon className="h-4 w-4" />
           </Link>
         </Button>

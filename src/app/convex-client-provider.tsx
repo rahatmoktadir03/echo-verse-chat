@@ -3,9 +3,9 @@
 import React from "react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { ClerkProvider, RedirectToSignIn, useAuth } from "@clerk/nextjs";
+import { ClerkProvider, useAuth } from "@clerk/nextjs";
 import { MultisessionAppSupport } from "@clerk/clerk-react/internal";
-import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
+import { AuthLoading } from "convex/react";
 
 // Move client creation outside component to avoid recreation on each render
 const convexClient = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
@@ -39,10 +39,7 @@ export const ConvexClientProvider = ({
           <AuthLoading>
             <Loader />
           </AuthLoading>
-          <Authenticated>{children}</Authenticated>
-          <Unauthenticated>
-            <RedirectToSignIn />
-          </Unauthenticated>
+          {children}
         </ConvexProviderWithClerk>
       </MultisessionAppSupport>
     </ClerkProvider>

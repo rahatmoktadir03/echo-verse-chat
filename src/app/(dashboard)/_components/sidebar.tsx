@@ -62,7 +62,7 @@ export function DashboardSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className="group">
-                  <Link href="/" className="flex items-center gap-3">
+                  <Link href="/dashboard" className="flex items-center gap-3">
                     <MessageSquare className="h-4 w-4 group-hover:text-primary transition-colors" />
                     <span>Direct Messages</span>
                   </Link>

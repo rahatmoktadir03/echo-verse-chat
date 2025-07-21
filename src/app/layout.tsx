@@ -17,8 +17,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "EchoVerse Chat",
-  description: "Modern real-time chat application with tech-themed design",
+  title: "Echo Verse - Connect Beyond Words",
+  description:
+    "Modern real-time chat application with seamless messaging and video calls",
 };
 
 export default function RootLayout({
